@@ -14,6 +14,7 @@ import java.io.InputStreamReader;
 import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 
 @Component
@@ -24,7 +25,7 @@ public class DataLoader {
             List<EnrollmentStats> statsList = new ArrayList<>();
 
             try(InputStream is = getClass().getResourceAsStream("/data/exportacion_migrantes.xlsx");
-                Workbook workbook = new XSSFWorkbook(is)) {
+                Workbook workbook = new XSSFWorkbook(Objects.requireNonNull(is))) {
                 Sheet sheet = workbook.getSheetAt(0);
                 boolean firstRow = true;
 
@@ -35,7 +36,12 @@ public class DataLoader {
                     }
 
                     String province = getCellValue(row.getCell(2));
-                    double enrollmentRate = Double.parseDouble(getCellValue(row.getCell(3)));
+                    String migrantsStr = getCellValue(row.getCell(3));
+                    if (province.isBlank()) continue;
+                    if (migrantsStr.isBlank()) continue;
+                    double enrollmentRate = Double.parseDouble(migrantsStr);
+
+                    if (enrollmentRate < 0) continue;
 
                     statsList.add(new EnrollmentStats(province, enrollmentRate));
                 }
