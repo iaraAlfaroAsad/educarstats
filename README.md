@@ -1,5 +1,5 @@
 # 🇦🇷 EducAR Stats API 📊
-**REST API for analyzing and predicting education indicators in Argentina**  
+1. [ ] **REST API for analyzing and predicting education indicators in Argentina**  
 Designed with Java, Spring Boot, and SOLID principles.  
 💡 Includes a Python-based Machine Learning microservice for predictions.
 
